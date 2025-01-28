@@ -1,0 +1,34 @@
+name: Flyway Migration CI/CD Dev
+
+on:
+  push:
+    branches:
+      - dev
+
+  # pull_request:
+  #   branches:
+  #     - dev
+
+  #Allows you to run this action manually
+  workflow_dispatch:
+
+jobs:
+  flyway_migration:
+    runs-on: ubuntu-latest
+
+    environment: dev
+    container:
+      image: flyway/flyway
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Flyway Migration
+        env:
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          set -e
+          export JAVA_ARGS="--add-opens=java.base/java.nio=ALL-UNNAMED"
+          flyway -user="$SNOWFLAKE_USER" -password="$SNOWFLAKE_PASSWORD" -configFiles=configs/dev.conf -X migrate
+        shell: bash
