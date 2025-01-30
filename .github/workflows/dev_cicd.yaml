@@ -20,6 +20,8 @@ jobs:
   flyway_migration:
     runs-on: ubuntu-latest
 
+    environment: dev
+
     container:
       image: flyway/flyway
 
