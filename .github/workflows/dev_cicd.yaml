@@ -36,7 +36,7 @@ jobs:
           export JAVA_ARGS="--add-opens=java.base/java.nio=ALL-UNNAMED"
 
           # Extract the branch name 
-          BRANCH_NAME="${GITHUB_REF##*/}"
+          BRANCH_NAME="${{ github.ref_name }}"
 
           if [ "$BRANCH_NAME" = "dev" ]; then
             CONFIG_FILE="configs/dev.conf"
